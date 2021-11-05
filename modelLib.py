@@ -54,6 +54,7 @@ class autoencoder(nn.Module):
         x = self.down1(x)
         x = self.down2(x)
         x = self.down3(x)
+        
         ls = x.flatten()
 
         x = self.up1(x)
