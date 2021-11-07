@@ -1,5 +1,5 @@
-from torchvision import transforms, util, datasets
 import torch
+from torchvision import transforms, utils, datasets
 import os
 from PIL import Image
 from environment import *
@@ -10,23 +10,27 @@ class myDataset(torch.utils.data.Dataset):
     def __init__(self, path=None, source=None, val_split=0):
         self.path = path
 
-        allfiles = [0] if path==None else os.listdir(path)
+        allFiles = [0] if path==None else os.listdir(path)
         np.random.seed(RANDOMSEED)
-        np.random.shuffle(allfiles)
-        split = int(val_split*(len(allfiles)-1))
+        np.random.shuffle(allFiles)
+
+        if DATALIMIT:
+            allFiles = allFiles[:DATALIMIT]
+
+        split = int(val_split*(len(allFiles)-1))
 
         # Filter irrelevant
         if source==None:
-             self.files = allfiles
+             self.files = allFiles
         elif source=="train":
-             self.files = allfiles[split:]
+             self.files = allFiles[split:]
         elif source=="validation":
-             self.files = allfiles[:split]
+             self.files = allFiles[:split]
 
         self.transformIn = transforms.Compose([
                      transforms.Grayscale(num_output_channels=1),
-                     transforms.Resize(256),
-                     transforms.CenterCrop(256),
+                     transforms.Resize(64),
+                     transforms.CenterCrop(64),
                      transforms.ToTensor()])
         
     def __len__(self):
@@ -40,6 +44,7 @@ class myDataset(torch.utils.data.Dataset):
     def loadFromFile(self, filepath):
         img = Image.open(filepath)
         inImg = self.transformIn(img)
+        inImg = np.reshape(inImg, (1,1,64,64))
         return inImg
 
 # save checkpoint
@@ -52,6 +57,6 @@ def loadChkPt(filename, model, optimizer=None):
     chkpt = torch.load(os.path.join(RESULTSDIR,filename))
     model.load_state_dict(chkpt['model'])
     if optimizer!=None: optimizer.load_state_dict(chkpt['optimizer'])
-    loss_train = chkpt['loss_train']
-    loss_val = chkpt['loss_val']
+    loss_train = chkpt['lossTrain']
+    loss_val = chkpt['lossVal']
     return model, optimizer, chkpt['epoch'], loss_train, loss_val

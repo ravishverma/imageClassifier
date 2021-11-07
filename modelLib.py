@@ -25,9 +25,9 @@ class encodeBlock(nn.Module):
 class decodeBlock(nn.Module):
     def __init__(self, in_channels, out_channels):
         super().__init__()
-        self.convTrans1 = nn.ConvTranspose2d(in_channels, in_channels, kernel_size=3, stride=2)
+        self.convTrans1 = nn.ConvTranspose2d(in_channels, in_channels, kernel_size=2, stride=2)
         self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=1, padding=1)
-        self.convTrans2 = nn.ConvTranspose2d(out_channels, out_channels, kernel_size=3, stride=2)
+        self.convTrans2 = nn.ConvTranspose2d(out_channels, out_channels, kernel_size=2, stride=2)
         self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1, padding=1)
         self.relu = nn.ReLU()
 
@@ -43,14 +43,14 @@ class decodeBlock(nn.Module):
 class autoencoder(nn.Module):
     def __init__(self):
         super().__init__()
-        self.down1 = encodeBlock(1,3) # 64x64x1 > 16x16x3
-        self.down2 = encodeBlock(3,5) # 16x16x3 > 4x4x5
-        self.down3 = encodeBlock(5,2) # 4x4x5 > 1x1x2
+        self.down1 = encodeBlock(1,3) # 1x64x64 > 3x16x16
+        self.down2 = encodeBlock(3,5) # 3x16x16 > 5x4x4
+        self.down3 = encodeBlock(5,2) # 5x4x4 > 2x1x1
         self.up1 = decodeBlock(2,5) 
         self.up2 = decodeBlock(5,3) 
         self.up3 = decodeBlock(3,1) 
 
-    def forward(x):
+    def forward(self,x):
         x = self.down1(x)
         x = self.down2(x)
         x = self.down3(x)
