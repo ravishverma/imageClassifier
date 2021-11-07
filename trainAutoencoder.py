@@ -8,13 +8,13 @@ from pytorch_model_summary import summary
 
 # Initialize data loader
 dataset_train = myDataset(path=DATADIR,source='train',val_split=0.2)
-loader_train = torch.utils.data.DataLoader(dataset_train, batch_size=BATCHSIZE, num_workers=0, pin_memory=True)
+loader_train = torch.utils.data.DataLoader(dataset_train, batch_size=BATCHSIZE, num_workers=4, pin_memory=True)
 
 dataset_val = myDataset(path=DATADIR,source='validation',val_split=0.2)
-loader_val = torch.utils.data.DataLoader(dataset_val, batch_size=BATCHSIZE, num_workers=0, pin_memory=True)
+loader_val = torch.utils.data.DataLoader(dataset_val, batch_size=BATCHSIZE, num_workers=4, pin_memory=True)
 
 # Initialize ML Model
-model = autoencoder()
+model = autoencoder().to(DEVICE)
 print(summary(model, torch.zeros(1,1,64,64)))
 
 reconLoss = torch.nn.MSELoss()
@@ -33,6 +33,7 @@ for epoch in range(NEPOCHS):
     
     model.train()
     for i, imgs in enumerate(loader_train):
+        imgs = imgs.to(DEVICE)
         optimizer.zero_grad()
         _, reconImgs = model(imgs)
         loss = reconLoss(reconImgs, imgs)
@@ -44,6 +45,7 @@ for epoch in range(NEPOCHS):
     model.eval()
     with torch.no_grad():
         for i, imgs in enumerate(loader_val):
+            imgs = imgs.to(DEVICE)
             _, reconImgs = model(imgs)
             loss = reconLoss(reconImgs, imgs)
             lossVal_s+=loss.item()

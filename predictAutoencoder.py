@@ -5,18 +5,19 @@ from modelLib import *
 
 class predictAE:
     def __init__(self, chkptFile):
-        self.model = autoencoder()
+        self.model = autoencoder().to(DEVICE)
         self.model, _, _, _, _ = loadChkPt(chkptFile, self.model) 
         self.dataset = myDataset()
 
     def reduce(self, filepath):
         img = self.dataset.loadFromFile(filepath)
+        img = img.to(DEVICE)
 
         self.model.eval()
 
         with torch.no_grad():
             ls, _ = self.model(img)
-            return ls
+            return ls.detach().numpy()
 
 def assessAE(chkptFile):
     import pandas as pd
