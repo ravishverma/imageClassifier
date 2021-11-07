@@ -27,16 +27,20 @@ def assessAE(chkptFile):
 
     dataset = myDataset(path=DATADIR)
 
-    lsRep1 = []
-    lsRep2 = []
-    lsRep3 = []
+    X1 = []
+    X2 = []
+    X3 = []
+    X4 = []
+    X5 = []
     for f in dataset.files:
         ls = predict.reduce(os.path.join(DATADIR,f))
-        lsRep1.append(ls[0].item())
-        lsRep2.append(ls[1].item())
-        lsRep3.append(ls[2].item())
+        X1.append(ls[0].item())
+        X2.append(ls[1].item())
+        X3.append(ls[2].item())
+        X4.append(ls[3].item())
+        X5.append(ls[4].item())
 
-    df = pd.DataFrame(data=list(zip(lsRep1,lsRep2,lsRep3)),columns=["X1","X2","X3"])
+    df = pd.DataFrame(data=list(zip(X1,X2,X3,X4,X5)),columns=["X1","X2","X3","X4","X5"])
     plt = sns.pairplot(df, plot_kws={"alpha":0.2})
     plt.savefig(os.path.join(RESULTSDIR,"assessLatentSpace.png"))    
 
