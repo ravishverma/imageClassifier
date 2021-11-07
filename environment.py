@@ -1,2 +1,7 @@
-dataDir = "./data"
-resultsDir = "./results"
+DATADIR = "./data"
+RESULTSDIR = "./results"
+BATCHSIZE = 1
+EPOCH0 = 0
+NEPOCH = 50
+SAVEINTERVAL = 10
+RANDOMSEED = 42
