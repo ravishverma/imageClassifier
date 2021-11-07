@@ -19,23 +19,24 @@ class predictAE:
             return ls
 
 def assessAE(chkptFile):
-    from matplotlib import pyplot as plt
+    import pandas as pd
+    import seaborn as sns
 
     predict = predictAE(chkptFile)
 
     dataset = myDataset(path=DATADIR)
 
-    lsRepX = []
-    lsRepY = []
+    lsRep1 = []
+    lsRep2 = []
+    lsRep3 = []
     for f in dataset.files:
         ls = predict.reduce(os.path.join(DATADIR,f))
-        lsRepX.append(ls[0].float())
-        lsRepY.append(ls[1].float())
+        lsRep1.append(ls[0].item())
+        lsRep2.append(ls[1].item())
+        lsRep3.append(ls[2].item())
 
-    fig = plt.figure()
-    plt.scatter(lsRepX, lsRepY)
-    plt.xlabel("Feature 1")
-    plt.ylabel("Feature 2")
+    df = pd.DataFrame(data=list(zip(lsRep1,lsRep2,lsRep3)),columns=["X1","X2","X3"])
+    plt = sns.pairplot(df)
     plt.savefig(os.path.join(RESULTSDIR,"assessLatentSpace.png"))    
 
 if __name__=="__main__":
