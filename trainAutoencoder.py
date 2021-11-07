@@ -67,5 +67,5 @@ for epoch in range(NEPOCHS):
         plt.legend()
         plt.ylabel('Loss')
         plt.xlabel('Epochs')
-        plt.savefig(os.path.join(RESULTSDIR,"train.png"))
+        plt.savefig(os.path.join(RESULTSDIR,"trainAutoencoder.png"))
         plt.close()
