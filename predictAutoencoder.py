@@ -37,7 +37,7 @@ def assessAE(chkptFile):
         lsRep3.append(ls[2].item())
 
     df = pd.DataFrame(data=list(zip(lsRep1,lsRep2,lsRep3)),columns=["X1","X2","X3"])
-    plt = sns.pairplot(df)
+    plt = sns.pairplot(df, plot_kws={"alpha":0.2})
     plt.savefig(os.path.join(RESULTSDIR,"assessLatentSpace.png"))    
 
 if __name__=="__main__":
