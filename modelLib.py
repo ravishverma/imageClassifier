@@ -16,6 +16,7 @@ class encodeBlock(nn.Module):
     def forward(self,x):
         x = self.conv1(x)
         x = self.pool1(x)
+        x = self.relu(x)
         x = self.conv2(x)
         x = self.pool2(x)
         x = self.relu(x)
@@ -34,6 +35,7 @@ class decodeBlock(nn.Module):
     def forward(self,x):
         x = self.convTrans1(x)
         x = self.conv1(x)
+        x = self.relu(x)
         x = self.convTrans2(x)
         x = self.conv2(x)
         x = self.relu(x)
