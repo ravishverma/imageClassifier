@@ -15,7 +15,7 @@ loader_val = torch.utils.data.DataLoader(dataset_val, batch_size=BATCHSIZE, num_
 
 # Initialize ML Model
 model = autoencoder().to(DEVICE)
-print(summary(model, torch.zeros(1,1,64,64)))
+print(summary(model, torch.zeros(1,1,256,256)))
 
 reconLoss = torch.nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters())

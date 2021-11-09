@@ -39,8 +39,11 @@ def assessAE(chkptFile):
         X4.append(ls[3].item())
 
     df = pd.DataFrame(data=list(zip(X1,X2,X3,X4)),columns=["X1","X2","X3","X4"])
-    plt = sns.pairplot(df, plot_kws={"alpha":0.2})
+    plt = sns.pairplot(df, corner=True, plot_kws={"alpha":0.2})
     plt.savefig(os.path.join(RESULTSDIR,"assessLatentSpace.png"))    
+
+    df["fileName"] = dataset.files
+    df.to_csv(os.path.join(RESULTSDIR,"reducedData.csv"))
 
 if __name__=="__main__":
     import sys

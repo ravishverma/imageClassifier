@@ -29,8 +29,8 @@ class myDataset(torch.utils.data.Dataset):
 
         self.transformIn = transforms.Compose([
                      transforms.Grayscale(num_output_channels=1),
-                     transforms.Resize(64),
-                     transforms.CenterCrop(64),
+                     transforms.Resize(256),
+                     transforms.CenterCrop(256),
                      transforms.ToTensor()])
         
     def __len__(self):
@@ -44,7 +44,7 @@ class myDataset(torch.utils.data.Dataset):
     def loadFromFile(self, filepath):
         img = Image.open(filepath)
         inImg = self.transformIn(img)
-        inImg = np.reshape(inImg, (1,1,64,64))
+        inImg = np.reshape(inImg, (1,1,256,256))
         return inImg
 
 # save checkpoint
