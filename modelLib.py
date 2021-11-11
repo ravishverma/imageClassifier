@@ -12,6 +12,7 @@ class encodeBlock(nn.Module):
         self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1, padding=1)
         self.pool2 = nn.MaxPool2d(2,2)
         self.relu = nn.ReLU()
+        self.batchNorm = nn.BatchNorm2d(out_channels)
         self.last = last
 
     def forward(self,x):
@@ -20,6 +21,7 @@ class encodeBlock(nn.Module):
         x = self.relu(x)
         x = self.conv2(x)
         x = self.pool2(x)
+        x = self.batchNorm(x)
         x = self.relu(x) if not self.last else x
         return x
 
@@ -47,25 +49,21 @@ class decodeBlock(nn.Module):
 class autoencoder(nn.Module):
     def __init__(self):
         super().__init__()
-        self.down1 = encodeBlock(1,3) # 1x256x256 > 3x64x64
-        self.down2 = encodeBlock(3,5) # 3x64x64 > 5x16x16
-        self.down3 = encodeBlock(5,7) # 5x16x16 > 7x4x4
-        self.down4 = encodeBlock(7,4) # 7x4x4 > Nx1x1
-        self.up1 = decodeBlock(4,7) 
+        self.down1 = encodeBlock(1,5) # 1x64x64 > 5x16x16
+        self.down2 = encodeBlock(5,7) # 5x16x16 > 7x4x4
+        self.down3 = encodeBlock(7,2) # 7x4x4 > 2x1x1
+        self.up1 = decodeBlock(2,7) 
         self.up2 = decodeBlock(7,5) 
-        self.up3 = decodeBlock(5,3) 
-        self.up4 = decodeBlock(3,1) 
+        self.up3 = decodeBlock(5,1) 
 
     def forward(self,x):
         x = self.down1(x)
         x = self.down2(x)
         x = self.down3(x)
-        x = self.down4(x)
         
         ls = x.flatten()
 
         x = self.up1(x)
         x = self.up2(x)
         x = self.up3(x)
-        x = self.up4(x)
         return ls, x     
