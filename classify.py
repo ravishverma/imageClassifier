@@ -13,5 +13,5 @@ df["labels"] = clustering.labels_
 
 df.to_csv(os.path.join(RESULTSDIR,"labeledData.csv"))
 
-plt = sns.pairplot(df,corner=True,hue="labels")
+plt = sns.pairplot(df,vars=['X1','X2'],corner=True,hue="labels")
 plt.savefig(os.path.join(RESULTSDIR,"clustersLatentSpace.png"))

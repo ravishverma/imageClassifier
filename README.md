@@ -9,4 +9,4 @@
 ![model](./results/assessLatentSpace.png)
 
 ### Latent Space Clusters
-![model](./resultss/clustersLatentSpace.png)
+![model](./results/clustersLatentSpace.png)
