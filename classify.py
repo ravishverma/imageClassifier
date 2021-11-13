@@ -7,7 +7,7 @@ import seaborn as sns
 df = pd.read_csv(os.path.join(RESULTSDIR,"reducedData.csv"))
 
 ac = AgglomerativeClustering()
-clustering = ac.fit(X=df[["X1","X2","X3","X4"]].to_numpy())
+clustering = ac.fit(X=df[["X1","X2"]].to_numpy())
 
 df["labels"] = clustering.labels_
 

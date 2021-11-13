@@ -21,12 +21,16 @@ class myDataset(torch.utils.data.Dataset):
 
         # Filter irrelevant
         if source==None:
-             self.files = allFiles
+            print('Data:')
+            self.files = allFiles
         elif source=="train":
-             self.files = allFiles[split:]
+            print('Training data:')
+            self.files = allFiles[split:]
         elif source=="validation":
-             self.files = allFiles[:split]
+            print('Validation data:')
+            self.files = allFiles[:split]
 
+        print(len(self.files))
         self.transformIn = transforms.Compose([
                      transforms.Grayscale(num_output_channels=1),
                      transforms.Resize(64),
