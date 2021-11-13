@@ -9,9 +9,9 @@ df = pd.read_csv(os.path.join(RESULTSDIR,"reducedData.csv"))
 ac = AgglomerativeClustering()
 clustering = ac.fit(X=df[["X1","X2"]].to_numpy())
 
-df["labels"] = clustering.labels_
+df["labels"] = [str(i) for i in clustering.labels_]
 
 df.to_csv(os.path.join(RESULTSDIR,"labeledData.csv"))
 
-plt = sns.pairplot(df,vars=['X1','X2'],corner=True,hue="labels")
+plt = sns.pairplot(df,corner=True,hue="labels")
 plt.savefig(os.path.join(RESULTSDIR,"clustersLatentSpace.png"))
