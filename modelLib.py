@@ -51,7 +51,7 @@ class autoencoder(nn.Module):
         super().__init__()
         self.down1 = encodeBlock(1,5) # 1x64x64 > 5x16x16
         self.down2 = encodeBlock(5,7) # 5x16x16 > 7x4x4
-        self.down3 = encodeBlock(7,2) # 7x4x4 > 2x1x1
+        self.down3 = encodeBlock(7,2,last=True) # 7x4x4 > 2x1x1
         self.up1 = decodeBlock(2,7) 
         self.up2 = decodeBlock(7,5) 
         self.up3 = decodeBlock(5,1) 
