@@ -19,7 +19,7 @@ class predictAE:
             ls, _ = self.model(img)
             return ls.detach().numpy()
 
-def assessAE(chkptFile):
+def assessAE(chkptFile,lsSize):
     import pandas as pd
     import seaborn as sns
 
@@ -27,15 +27,15 @@ def assessAE(chkptFile):
 
     dataset = myDataset(path=DATADIR)
 
-    X1 = []
-    X2 = []
+    X = []
+    Xnames = ["X"+str(i) for i in range(lsSize)]
     for f in dataset.files:
         ls = predict.reduce(os.path.join(DATADIR,f))
         ls = ls.flatten()
-        X1.append(ls[0].item())
-        X2.append(ls[1].item())
-
-    df = pd.DataFrame(data=list(zip(X1,X2)),columns=["X1","X2"])
+        entry = [lsi.item() for lsi in ls]
+        X.append(entry)
+        
+    df = pd.DataFrame(data=X,columns=Xnames)
     plt = sns.pairplot(df, corner=True, plot_kws={"alpha":0.2})
     plt.savefig(os.path.join(RESULTSDIR,"assessLatentSpace.png"))    
 
@@ -45,4 +45,5 @@ def assessAE(chkptFile):
 if __name__=="__main__":
     import sys
     chkptFile = sys.argv[1]
-    assessAE(chkptFile)
+    lsSize = int(sys.argv[2])
+    assessAE(chkptFile,lsSize)

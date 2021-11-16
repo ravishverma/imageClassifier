@@ -3,11 +3,15 @@ from environment import *
 import os
 from sklearn.cluster import AgglomerativeClustering
 import seaborn as sns
+import sys
+
+lsSize = int(sys.argv[1])
+Xnames = ["X"+str(i) for i in range(lsSize)]
 
 df = pd.read_csv(os.path.join(RESULTSDIR,"reducedData.csv"), index_col=0)
 
 ac = AgglomerativeClustering()
-clustering = ac.fit(X=df[["X1","X2"]].to_numpy())
+clustering = ac.fit(X=df[Xnames].to_numpy())
 
 df["labels"] = [str(i) for i in clustering.labels_]
 
