@@ -55,6 +55,8 @@ for epoch in range(NEPOCHS):
     lossTrain.append(lossTrain_s/len(loader_train))
     lossVal.append(lossVal_s/len(loader_val))
 
+    print(f'Train Loss: {lossTrain[-1]}, Val Loss: {lossVal[-1]}')
+
     if (EPOCH0+epoch+1)%SAVEINTERVAL==0:
         chkpt = {'epoch': EPOCH0+epoch,
                  'model': model.state_dict(),
@@ -62,8 +64,6 @@ for epoch in range(NEPOCHS):
                  'lossTrain': lossTrain,
                  'lossVal': lossVal}
         saveChkPt(chkpt, f'chkpt_{EPOCH0+epoch}.pt')
-
-        print(f'Train Loss: {lossTrain[-1]}, Val Loss: {lossVal[-1]}')
 
         plt.figure()
         plt.plot(range(EPOCH0+epoch+1), lossTrain, label='Train')
