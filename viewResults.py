@@ -6,12 +6,7 @@ import sys
 import torch
 import torchvision
 from dataLoader import *
-from modelLib import *
 
-chkptFile = sys.argv[1]
-
-model = autoencoder().to(DEVICE)
-model, _, _, _, _ = loadChkPt(chkptFile, model)
 dataset = myDataset(path=DATADIR)
 
 df = pd.read_csv(os.path.join(RESULTSDIR,"labeledData.csv"), index_col=0)
