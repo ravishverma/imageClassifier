@@ -51,17 +51,27 @@ class autoencoder(nn.Module):
         super().__init__()
         self.down1 = encodeBlock(1,5) # 1x64x64 > 5x16x16
         self.down2 = encodeBlock(5,7) # 5x16x16 > 7x4x4
-        self.down3 = encodeBlock(7,2,last=True) # 7x4x4 > 2x1x1
-        self.up1 = decodeBlock(2,7) 
+        self.down3 = encodeBlock(7,7) # 7x4x4 > 7x1x1
+        self.lin1 = nn.Linear(7,5)
+        self.lin2 = nn.Linear(5,2)
+        self.lin3 = nn.Linear(2,5)
+        self.lin4 = nn.Linear(5,7)
+        self.up1 = decodeBlock(7,7) 
         self.up2 = decodeBlock(7,5) 
         self.up3 = decodeBlock(5,1) 
+        self.relu = nn.ReLU()
 
     def forward(self,x):
         x = self.down1(x)
         x = self.down2(x)
         x = self.down3(x)
         
-        ls = x.flatten()
+        x = x.reshape((-1,7))
+        x = self.relu(self.lin1(x))
+        ls = self.lin2(x)
+        x = self.relu(self.lin3(ls))
+        x = self.relu(self.lin4(x))
+        x = x.reshape((-1,7,1,1))
 
         x = self.up1(x)
         x = self.up2(x)

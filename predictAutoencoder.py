@@ -31,6 +31,7 @@ def assessAE(chkptFile):
     X2 = []
     for f in dataset.files:
         ls = predict.reduce(os.path.join(DATADIR,f))
+        ls = ls.flatten()
         X1.append(ls[0].item())
         X2.append(ls[1].item())
 
