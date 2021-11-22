@@ -53,8 +53,8 @@ class autoencoder(nn.Module):
         self.down2 = encodeBlock(20,40) # 16x16 > 4x4
         self.down3 = encodeBlock(40,60) # 4x4 > 1x1
         self.lin1 = nn.Linear(60,10)
-        self.lin2 = nn.Linear(10,5)
-        self.lin3 = nn.Linear(5,10)
+        self.lin2 = nn.Linear(10,3)
+        self.lin3 = nn.Linear(3,10)
         self.lin4 = nn.Linear(10,60)
         self.up1 = decodeBlock(60,40) 
         self.up2 = decodeBlock(40,20) 
