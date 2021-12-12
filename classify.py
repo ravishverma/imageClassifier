@@ -12,13 +12,13 @@ def clusterWithAC():
     clustering = ac.fit(X=df[Xnames].to_numpy())
     return clustering.labels_
 
-def clusterWithKM():
+def clusterWithKM(n):
     from sklearn.cluster import KMeans
-    km = KMeans(n_clusters=3).fit(X=df[Xnames].to_numpy())
+    km = KMeans(n_clusters=n).fit(X=df[Xnames].to_numpy())
     return km.labels_
 
 if __name__=="__main__":
-    labels = None
+    labels = None 
 
     lsSize = int(sys.argv[1])
     algo = sys.argv[2]
@@ -27,7 +27,8 @@ if __name__=="__main__":
     if algo=="AC":
         labels = clusterWithAC()
     elif algo=="KM":
-        labels = clusterWithKM()
+        n_clusters = int(sys.argv[3])
+        labels = clusterWithKM(n_clusters)
 
     df["labels"] = [str(i) for i in labels]
 
