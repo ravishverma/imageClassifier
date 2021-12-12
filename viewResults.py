@@ -15,13 +15,15 @@ uniqueLabels = sorted(df["labels"].unique())
 
 fig, axes = plt.subplots(len(uniqueLabels),1)
 
+N = 10
+
 for i, uL in enumerate(uniqueLabels):
-    sample = df[df["labels"]==uL].sample(n=4)["fileName"].tolist()
+    sample = df[df["labels"]==uL].sample(n=N)["fileName"].tolist()
     grid = []
     for s in sample:
         img = dataset.loadFromFile(os.path.join(DATADIR,s))
         grid.append(img.reshape(1,64,64))
-    gridImg = torchvision.utils.make_grid(grid,nrow=4)
+    gridImg = torchvision.utils.make_grid(grid,nrow=N)
     gridImg = gridImg.permute(1,2,0)
     axes[i].imshow(gridImg)
     axes[i].set_ylabel("Label "+str(uL))
