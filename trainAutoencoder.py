@@ -7,11 +7,11 @@ from matplotlib import pyplot as plt
 from pytorch_model_summary import summary
 
 # Initialize data loader
-dataset_train = myDataset(path=DATADIR,source='train',val_split=0.2)
+dataset_train = myDataset(path=DATADIR,source='train',val_split=0.1)
 loader_train = torch.utils.data.DataLoader(dataset_train, batch_size=BATCHSIZE,
         num_workers=4, pin_memory=True, drop_last=True)
 
-dataset_val = myDataset(path=DATADIR,source='validation',val_split=0.2)
+dataset_val = myDataset(path=DATADIR,source='validation',val_split=0.1)
 loader_val = torch.utils.data.DataLoader(dataset_val, batch_size=BATCHSIZE,
         num_workers=4, pin_memory=True, drop_last=True)
 
