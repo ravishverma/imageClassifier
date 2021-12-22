@@ -1,5 +1,6 @@
 import torch.nn as nn
 import torch.optim as optim
+from environment import *
 
 # Input: Grayscale images: 64 x 64 x 1
 
@@ -22,7 +23,7 @@ class encodeBlock(nn.Module):
         x = self.conv2(x)
         x = self.pool2(x)
         x = self.batchNorm(x)
-        x = self.relu(x) if not self.last else x
+        x = self.relu(x)
         return x
 
 # Expand image size to 4 x 4
@@ -51,12 +52,12 @@ class autoencoder(nn.Module):
         super().__init__()
         self.down1 = encodeBlock(1,20) # 64x64 > 16x16
         self.down2 = encodeBlock(20,40) # 16x16 > 4x4
-        self.down3 = encodeBlock(40,60) # 4x4 > 1x1
-        self.lin1 = nn.Linear(60,10)
-        self.lin2 = nn.Linear(10,3)
-        self.lin3 = nn.Linear(3,10)
-        self.lin4 = nn.Linear(10,60)
-        self.up1 = decodeBlock(60,40) 
+        self.down3 = encodeBlock(40,20) # 4x4 > 1x1
+
+        self.fcn1 = nn.Linear(20,LSSIZE)
+        self.fcn2 = nn.Linear(LSSIZE,20)
+
+        self.up1 = decodeBlock(20,40) 
         self.up2 = decodeBlock(40,20) 
         self.up3 = decodeBlock(20,1) 
         self.relu = nn.ReLU()
@@ -66,15 +67,13 @@ class autoencoder(nn.Module):
         x = self.down2(x)
         x = self.down3(x)
         
-        x = x.reshape((-1,60))
-        x = self.relu(self.lin1(x))
-        ls = self.lin2(x)
+        x = x.view(-1,20)
+        ls = self.fcn1(x)
         x = self.relu(ls)
-        x = self.relu(self.lin3(x))
-        x = self.relu(self.lin4(x))
-        x = x.reshape((-1,60,1,1))
+        x = self.relu(self.fcn2(x))
+        x = x.view(-1,20,1,1)
 
         x = self.up1(x)
         x = self.up2(x)
         x = self.up3(x)
-        return ls, x     
+        return ls, x
