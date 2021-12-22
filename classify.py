@@ -17,6 +17,12 @@ def clusterWithKM(n):
     km = KMeans(n_clusters=n).fit(X=df[Xnames].to_numpy())
     return km.labels_
 
+def clusterWithHDBSCAN():
+    import hdbscan
+    hdbc = hdbscan.HDBSCAN()
+    hdbc.fit(df[Xnames].to_numpy())
+    return hdbc.labels_
+
 if __name__=="__main__":
     labels = None 
 
@@ -26,6 +32,8 @@ if __name__=="__main__":
 
     if algo=="AC":
         labels = clusterWithAC()
+    elif algo=="HDBS":
+        labels = clusterWithHDBSCAN()
     elif algo=="KM":
         n_clusters = int(sys.argv[3])
         labels = clusterWithKM(n_clusters)
