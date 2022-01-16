@@ -45,5 +45,4 @@ def assessAE(chkptFile,lsSize):
 if __name__=="__main__":
     import sys
     chkptFile = sys.argv[1]
-    lsSize = int(sys.argv[2])
-    assessAE(chkptFile,lsSize)
+    assessAE(chkptFile,LSSIZE)

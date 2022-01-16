@@ -26,9 +26,8 @@ def clusterWithHDBSCAN():
 if __name__=="__main__":
     labels = None 
 
-    lsSize = int(sys.argv[1])
-    algo = sys.argv[2]
-    Xnames = ["X"+str(i) for i in range(lsSize)]
+    algo = sys.argv[1]
+    Xnames = ["X"+str(i) for i in range(LSSIZE)]
 
     if algo=="AC":
         labels = clusterWithAC()
