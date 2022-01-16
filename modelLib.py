@@ -22,7 +22,6 @@ class encodeBlock(nn.Module):
         x = self.relu(x)
         x = self.conv2(x)
         x = self.pool2(x)
-        x = self.batchNorm(x)
         x = self.relu(x)
         return x
 
@@ -39,9 +38,11 @@ class decodeBlock(nn.Module):
 
     def forward(self,x):
         x = self.convTrans1(x)
+        x = self.relu(x)
         x = self.conv1(x)
         x = self.relu(x)
         x = self.convTrans2(x)
+        x = self.relu(x)
         x = self.conv2(x)
         x = self.relu(x) if not self.last else x
         return x
@@ -56,11 +57,11 @@ class autoencoder(nn.Module):
 
         self.fcn1 = nn.Linear(20,LSSIZE)
         self.fcn2 = nn.Linear(LSSIZE,20)
+        self.relu = nn.ReLU()
 
         self.up1 = decodeBlock(20,40) 
         self.up2 = decodeBlock(40,20) 
-        self.up3 = decodeBlock(20,1) 
-        self.relu = nn.ReLU()
+        self.up3 = decodeBlock(20,1, last=True) 
 
     def forward(self,x):
         x = self.down1(x)
