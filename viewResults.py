@@ -15,7 +15,7 @@ uniqueLabels = sorted(df["labels"].unique())
 
 fig, axes = plt.subplots(len(uniqueLabels),1)
 
-N = 10
+N = 4
 
 for i, uL in enumerate(uniqueLabels):
     sample = df[df["labels"]==uL].sample(n=N)["fileName"].tolist()
